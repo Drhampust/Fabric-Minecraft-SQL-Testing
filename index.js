@@ -14,12 +14,12 @@ async function run() {
   await runBuild(() => {
     console.log('[ACTION] Running server test!');
 
-    let dir = './' + process.env.INPUT_SERVERTYPE + '/run/'
+    let dir = './run/'
 
     if (!fs.existsSync(dir))
       fs.mkdirSync(dir);
 
-    fs.writeFile( './' + process.env.INPUT_SERVERTYPE + '/run/eula.txt', 'eula=true', { flag: 'wx' }, err => {
+    fs.writeFile( dir + 'eula.txt', 'eula=true', { flag: 'wx' }, err => {
       if (err)
         core.setFailed(err.message);
 
@@ -52,13 +52,13 @@ async function runBuild(callback) {
 }
 
 // Test running the server
-async function runServer(callback, serverType) {
+async function runServer(callback) {
   let server;
 
   if(process.platform === 'win32')
-    server = await spawn('gradlew', [serverType.concat(':runServer'), '--args=“nogui”'], { shell: true});
+    server = await spawn('gradlew', ['runServer', '--args=“nogui”'], { shell: true});
   else
-    server = await spawn('./gradlew', [serverType.concat(':runServer'), '--args=“nogui”']);
+    server = await spawn('./gradlew', ['runServer', '--args=“nogui”']);
 
   // Succeed when the server launches
   server.stdout.on('data', (data) => {
