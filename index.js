@@ -6,8 +6,6 @@ const process = require('process');
 
 // Run the task
 async function run() {
-  if (!(['fabric', 'forge'].includes(process.env.INPUT_SERVERTYPE)))
-    core.setFailed('Invalid server type: ' + process.env.INPUT_SERVERTYPE) 
 
   console.log('[ACTION] Running gradle build test.');
 
@@ -25,7 +23,7 @@ async function run() {
 
       runServer(() => {
           console.log('[ACTION] Run server test has passed!')
-      }, process.env.INPUT_SERVERTYPE);
+      });
     });
   })
 }
